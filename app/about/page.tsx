@@ -10,10 +10,10 @@ export const metadata = {
 
 export default function AboutPage() {
   return (
-    <div className="flex flex-col min-h-screen bg-[#fdf8f8]">
+    <div className="flex flex-col min-h-screen bg-[#fdf8f8] overflow-x-hidden">
       <Header />
 
-      <main className="flex-1 overflow-hidden">
+      <main className="flex-1 overflow-x-hidden">
         {/* ── Hero ── */}
         <section className="relative min-h-[70vh] flex items-center justify-center overflow-hidden">
           <div className="absolute inset-0 pointer-events-none">
@@ -22,15 +22,16 @@ export default function AboutPage() {
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] rounded-full bg-gradient-to-r from-rose-100/30 via-pink-50/20 to-fuchsia-100/30 blur-2xl" />
           </div>
 
-          <div className="absolute top-12 right-12 w-64 h-64 rounded-full border border-pink-200/50" />
-          <div className="absolute top-20 right-20 w-48 h-48 rounded-full border border-pink-100/40" />
-          <div className="absolute bottom-16 left-8 w-32 h-32 rounded-full border border-rose-200/40" />
+          {/* Decorative rings — hidden on small screens to avoid overflow */}
+          <div className="hidden sm:block absolute top-12 right-12 w-64 h-64 rounded-full border border-pink-200/50" />
+          <div className="hidden sm:block absolute top-20 right-20 w-48 h-48 rounded-full border border-pink-100/40" />
+          <div className="hidden sm:block absolute bottom-16 left-8 w-32 h-32 rounded-full border border-rose-200/40" />
           <div
-            className="absolute top-0 right-[30%] w-px h-full bg-gradient-to-b from-transparent via-pink-200/60 to-transparent"
+            className="hidden sm:block absolute top-0 right-[30%] w-px h-full bg-gradient-to-b from-transparent via-pink-200/60 to-transparent"
             style={{ transform: "rotate(15deg) translateX(50px)" }}
           />
 
-          <div className="relative z-10 container mx-auto px-4 text-center max-w-4xl">
+          <div className="relative z-10 container mx-auto px-6 text-center max-w-4xl">
             <p
               className="text-[11px] tracking-[0.35em] uppercase text-pink-400 mb-6 font-medium"
               style={{ fontFamily: "'DM Sans', sans-serif" }}
@@ -39,7 +40,7 @@ export default function AboutPage() {
             </p>
 
             <h1
-              className="text-6xl sm:text-7xl lg:text-8xl font-light text-transparent bg-clip-text leading-[1.05] mb-8"
+              className="text-5xl sm:text-7xl lg:text-8xl font-light text-transparent bg-clip-text leading-[1.05] mb-8"
               style={{
                 fontFamily: "'Cormorant Garamond', serif",
                 backgroundImage:
@@ -52,7 +53,7 @@ export default function AboutPage() {
             </h1>
 
             <p
-              className="text-lg sm:text-xl text-rose-900/60 leading-relaxed max-w-2xl mx-auto font-light"
+              className="text-base sm:text-xl text-rose-900/60 leading-relaxed max-w-2xl mx-auto font-light"
               style={{ fontFamily: "'DM Sans', sans-serif" }}
             >
               Founded in Sydney, Australia, Skye Avenue is dedicated to bringing
@@ -60,7 +61,7 @@ export default function AboutPage() {
               quality and elegance.
             </p>
 
-            <div className="mt-16 flex flex-col items-center gap-2 text-pink-300">
+            <div className="mt-12 flex flex-col items-center gap-2 text-pink-300">
               <div className="w-px h-12 bg-gradient-to-b from-transparent to-pink-300" />
               <span className="text-[10px] tracking-[0.3em] uppercase">
                 Scroll
@@ -70,13 +71,13 @@ export default function AboutPage() {
         </section>
 
         {/* ── The Beginning ── */}
-        <section className="py-24 relative">
+        <section className="py-16 sm:py-24 relative">
           <div className="absolute inset-0 pointer-events-none">
             <div className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-pink-100/40 to-transparent blur-3xl" />
           </div>
 
-          <div className="container mx-auto px-4 max-w-6xl">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+          <div className="container mx-auto px-6 max-w-6xl">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
               <div className="order-2 lg:order-1">
                 <p
                   className="text-[10px] tracking-[0.35em] uppercase text-pink-400 mb-4 font-medium"
@@ -85,13 +86,13 @@ export default function AboutPage() {
                   01 — Origin
                 </p>
                 <h2
-                  className="text-4xl sm:text-5xl font-light text-rose-950/80 mb-8 leading-tight"
+                  className="text-3xl sm:text-5xl font-light text-rose-950/80 mb-8 leading-tight"
                   style={{ fontFamily: "'Cormorant Garamond', serif" }}
                 >
                   The Beginning
                 </h2>
                 <div
-                  className="space-y-5 text-rose-900/55 leading-relaxed font-light"
+                  className="space-y-5 text-rose-900/55 leading-relaxed font-light text-sm sm:text-base"
                   style={{ fontFamily: "'DM Sans', sans-serif" }}
                 >
                   <p>
@@ -111,7 +112,7 @@ export default function AboutPage() {
               </div>
 
               <div className="order-1 lg:order-2 relative">
-                <div className="relative rounded-3xl overflow-hidden aspect-[4/5] bg-gradient-to-br from-pink-100 via-rose-50 to-fuchsia-100">
+                <div className="relative rounded-3xl overflow-hidden aspect-[4/5] bg-gradient-to-br from-pink-100 via-rose-50 to-fuchsia-100 max-w-sm mx-auto lg:max-w-none">
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="w-48 h-48 rounded-full bg-gradient-to-br from-pink-200/80 to-rose-300/60 blur-sm" />
                   </div>
@@ -139,7 +140,8 @@ export default function AboutPage() {
                   <div className="absolute bottom-6 left-6 w-3 h-3 rounded-full bg-rose-200/70" />
                 </div>
 
-                <div className="absolute -bottom-6 -left-6 bg-white/90 backdrop-blur-sm rounded-2xl px-6 py-4 shadow-[0_8px_32px_rgba(244,114,182,0.15)] border border-pink-100">
+                {/* Floating badge — positioned relative to card, inset so it never overflows */}
+                <div className="absolute bottom-4 left-4 sm:-bottom-6 sm:-left-6 bg-white/90 backdrop-blur-sm rounded-2xl px-5 py-3 shadow-[0_8px_32px_rgba(244,114,182,0.15)] border border-pink-100">
                   <p
                     className="text-[10px] tracking-[0.3em] uppercase text-pink-400 mb-1"
                     style={{ fontFamily: "'DM Sans', sans-serif" }}
@@ -147,7 +149,7 @@ export default function AboutPage() {
                     Founded
                   </p>
                   <p
-                    className="text-2xl font-light text-rose-950/70"
+                    className="text-xl sm:text-2xl font-light text-rose-950/70"
                     style={{ fontFamily: "'Cormorant Garamond', serif" }}
                   >
                     Sydney, AU
@@ -159,13 +161,13 @@ export default function AboutPage() {
         </section>
 
         {/* ── Values ── */}
-        <section className="py-24 relative overflow-hidden">
+        <section className="py-16 sm:py-24 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-pink-50 via-rose-50/80 to-fuchsia-50/60" />
           <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-pink-200 to-transparent" />
           <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-pink-200 to-transparent" />
 
-          <div className="relative container mx-auto px-4 max-w-6xl">
-            <div className="text-center mb-16">
+          <div className="relative container mx-auto px-6 max-w-6xl">
+            <div className="text-center mb-12">
               <p
                 className="text-[10px] tracking-[0.35em] uppercase text-pink-400 mb-4 font-medium"
                 style={{ fontFamily: "'DM Sans', sans-serif" }}
@@ -173,14 +175,15 @@ export default function AboutPage() {
                 02 — Philosophy
               </p>
               <h2
-                className="text-4xl sm:text-5xl font-light text-rose-950/80"
+                className="text-3xl sm:text-5xl font-light text-rose-950/80"
                 style={{ fontFamily: "'Cormorant Garamond', serif" }}
               >
                 Our Values
               </h2>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Stack on mobile, 3-col on md+ */}
+            <div className="flex flex-col sm:grid sm:grid-cols-2 md:grid-cols-3 gap-5">
               {[
                 {
                   num: "I",
@@ -204,7 +207,7 @@ export default function AboutPage() {
               ].map((val) => (
                 <div
                   key={val.num}
-                  className="group relative bg-white/70 backdrop-blur-sm rounded-3xl p-8 border border-pink-100/80 hover:border-pink-200 transition-all duration-500 hover:shadow-[0_16px_48px_rgba(244,114,182,0.12)] overflow-hidden"
+                  className="group relative bg-white/70 backdrop-blur-sm rounded-3xl p-7 sm:p-8 border border-pink-100/80 hover:border-pink-200 transition-all duration-500 hover:shadow-[0_16px_48px_rgba(244,114,182,0.12)] overflow-hidden"
                 >
                   <div
                     className={`absolute inset-0 bg-gradient-to-br ${val.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl`}
@@ -240,20 +243,20 @@ export default function AboutPage() {
         </section>
 
         {/* ── Sustainable Beauty ── */}
-        <section className="py-24 relative">
+        <section className="py-16 sm:py-24 relative">
           <div className="absolute right-0 top-0 w-[500px] h-full bg-gradient-to-l from-pink-100/40 to-transparent pointer-events-none" />
 
-          <div className="container mx-auto px-4 max-w-6xl">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
-              <div className="relative">
-                <div className="w-full aspect-square max-w-sm mx-auto relative">
+          <div className="container mx-auto px-6 max-w-6xl">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
+              <div className="relative flex justify-center">
+                <div className="w-full aspect-square max-w-[280px] sm:max-w-sm relative">
                   <div className="absolute inset-0 rounded-full bg-gradient-to-br from-pink-100 to-rose-50 border border-pink-200/50" />
                   <div className="absolute inset-6 rounded-full bg-gradient-to-tl from-fuchsia-100/60 to-pink-50" />
                   <div className="absolute inset-12 rounded-full bg-gradient-to-br from-white to-pink-50 border border-pink-100/40" />
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-center">
                       <p
-                        className="text-3xl font-light text-rose-900/60 leading-tight"
+                        className="text-2xl sm:text-3xl font-light text-rose-900/60 leading-tight"
                         style={{ fontFamily: "'Cormorant Garamond', serif" }}
                       >
                         Beauty
@@ -284,13 +287,13 @@ export default function AboutPage() {
                   03 — Commitment
                 </p>
                 <h2
-                  className="text-4xl sm:text-5xl font-light text-rose-950/80 mb-8 leading-tight"
+                  className="text-3xl sm:text-5xl font-light text-rose-950/80 mb-8 leading-tight"
                   style={{ fontFamily: "'Cormorant Garamond', serif" }}
                 >
                   Sustainable Beauty
                 </h2>
                 <div
-                  className="space-y-5 text-rose-900/55 leading-relaxed font-light"
+                  className="space-y-5 text-rose-900/55 leading-relaxed font-light text-sm sm:text-base"
                   style={{ fontFamily: "'DM Sans', sans-serif" }}
                 >
                   <p>
@@ -311,12 +314,12 @@ export default function AboutPage() {
         </section>
 
         {/* ── Connect CTA ── */}
-        <section className="py-24 relative overflow-hidden">
+        <section className="py-20 sm:py-24 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-pink-500 via-rose-400 to-fuchsia-500" />
           <div className="absolute inset-0 bg-gradient-to-tl from-pink-600/40 via-transparent to-rose-300/20" />
-          <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full border border-white/10" />
-          <div className="absolute -top-12 -right-12 w-72 h-72 rounded-full border border-white/10" />
-          <div className="absolute -bottom-24 -left-24 w-80 h-80 rounded-full border border-white/10" />
+          <div className="hidden sm:block absolute -top-24 -right-24 w-96 h-96 rounded-full border border-white/10" />
+          <div className="hidden sm:block absolute -top-12 -right-12 w-72 h-72 rounded-full border border-white/10" />
+          <div className="hidden sm:block absolute -bottom-24 -left-24 w-80 h-80 rounded-full border border-white/10" />
           <div
             className="absolute inset-0 opacity-20"
             style={{
@@ -327,7 +330,7 @@ export default function AboutPage() {
             }}
           />
 
-          <div className="relative container mx-auto px-4 text-center max-w-2xl">
+          <div className="relative container mx-auto px-6 text-center max-w-2xl">
             <p
               className="text-[10px] tracking-[0.35em] uppercase text-pink-100/80 mb-6 font-medium"
               style={{ fontFamily: "'DM Sans', sans-serif" }}
@@ -335,20 +338,20 @@ export default function AboutPage() {
               Get in Touch
             </p>
             <h2
-              className="text-5xl sm:text-6xl font-light text-white mb-6 leading-tight"
+              className="text-4xl sm:text-6xl font-light text-white mb-6 leading-tight"
               style={{ fontFamily: "'Cormorant Garamond', serif" }}
             >
               Let&apos;s Connect
             </h2>
             <p
-              className="text-pink-100/80 mb-12 text-lg font-light leading-relaxed"
+              className="text-pink-100/80 mb-10 text-base sm:text-lg font-light leading-relaxed"
               style={{ fontFamily: "'DM Sans', sans-serif" }}
             >
               Have questions? We&apos;d love to hear from you.
             </p>
             <Link
               href="/contact"
-              className="group inline-flex items-center gap-3 bg-white text-pink-600 px-10 py-4 rounded-full text-sm tracking-widest uppercase font-medium hover:bg-pink-50 transition-all duration-300 hover:gap-5 hover:shadow-[0_0_40px_rgba(255,255,255,0.3)]"
+              className="group inline-flex items-center gap-3 bg-white text-pink-600 px-8 sm:px-10 py-4 rounded-full text-sm tracking-widest uppercase font-medium hover:bg-pink-50 transition-all duration-300 hover:gap-5 hover:shadow-[0_0_40px_rgba(255,255,255,0.3)]"
               style={{ fontFamily: "'DM Sans', sans-serif" }}
             >
               Get in Touch
