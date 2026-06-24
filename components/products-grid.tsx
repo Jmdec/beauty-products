@@ -195,7 +195,178 @@ function DualRangeSlider({
   );
 }
 
-// ── Floating Toolbar ──────────────────────────────────────────────────────────
+// ── Mobile Filter Sheet ───────────────────────────────────────────────────────
+function MobileFilterSheet({
+  open,
+  onClose,
+  selectedCategory,
+  setSelectedCategory,
+  sortBy,
+  setSortBy,
+  priceRange,
+  setPriceRange,
+  search,
+  setSearch,
+  clearAll,
+  resultCount,
+}: {
+  open: boolean;
+  onClose: () => void;
+  selectedCategory: string;
+  setSelectedCategory: (v: string) => void;
+  sortBy: string;
+  setSortBy: (v: string) => void;
+  priceRange: [number, number];
+  setPriceRange: (v: [number, number]) => void;
+  search: string;
+  setSearch: (v: string) => void;
+  clearAll: () => void;
+  resultCount: number;
+}) {
+  return (
+    <>
+      {/* Backdrop */}
+      <div
+        className={`fixed inset-0 bg-black/40 z-40 transition-opacity duration-300 md:hidden ${
+          open ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
+        onClick={onClose}
+      />
+
+      {/* Sheet */}
+      <div
+        className={`
+          fixed bottom-0 left-0 right-0 z-50 md:hidden
+          bg-background rounded-t-2xl border-t border-border/40
+          transition-transform duration-400 ease-out
+          max-h-[85vh] overflow-y-auto
+          ${open ? "translate-y-0" : "translate-y-full"}
+        `}
+      >
+        {/* Handle */}
+        <div className="flex justify-center pt-3 pb-1">
+          <div className="w-10 h-1 rounded-full bg-border" />
+        </div>
+
+        <div className="px-5 pb-8 pt-4">
+          {/* Header */}
+          <div className="flex items-center justify-between mb-6">
+            <p className="text-[11px] uppercase tracking-[0.2em] text-foreground/40 font-medium">
+              Filters
+            </p>
+            <button
+              onClick={onClose}
+              className="text-foreground/40 hover:text-foreground transition-colors"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+
+          {/* Search */}
+          <div className="mb-6">
+            <p className="text-[10px] uppercase tracking-widest text-foreground/30 mb-3">
+              Search
+            </p>
+            <div className="flex items-center gap-2 border border-border/40 rounded-full px-4 py-2.5">
+              <Search className="w-3.5 h-3.5 text-foreground/30 flex-shrink-0" />
+              <input
+                type="text"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search products…"
+                className="bg-transparent text-[13px] tracking-wide outline-none flex-1 placeholder:text-foreground/30"
+              />
+              {search && (
+                <button onClick={() => setSearch("")}>
+                  <X className="w-3 h-3 text-foreground/40 hover:text-foreground transition-colors" />
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Category */}
+          <div className="mb-6">
+            <p className="text-[10px] uppercase tracking-widest text-foreground/30 mb-3">
+              Category
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {CATEGORY_OPTIONS.map((cat) => (
+                <button
+                  key={cat.value}
+                  onClick={() => setSelectedCategory(cat.value)}
+                  className={`px-4 py-2 rounded-full text-[13px] tracking-wide border transition-all duration-200 ${
+                    selectedCategory === cat.value
+                      ? "bg-foreground text-background border-foreground font-medium"
+                      : "border-border/40 text-foreground/50 hover:border-foreground/30 hover:text-foreground"
+                  }`}
+                >
+                  {cat.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Price */}
+          <div className="mb-6">
+            <p className="text-[10px] uppercase tracking-widest text-foreground/30 mb-3">
+              Price Range
+            </p>
+            <DualRangeSlider
+              min={MIN_PRICE}
+              max={MAX_PRICE}
+              step={STEP}
+              value={priceRange}
+              onChange={setPriceRange}
+            />
+          </div>
+
+          {/* Sort */}
+          <div className="mb-8">
+            <p className="text-[10px] uppercase tracking-widest text-foreground/30 mb-3">
+              Sort By
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {SORT_OPTIONS.map((opt) => (
+                <button
+                  key={opt.value}
+                  onClick={() => setSortBy(opt.value)}
+                  className={`px-4 py-2 rounded-full text-[13px] tracking-wide border transition-all duration-200 ${
+                    sortBy === opt.value
+                      ? "bg-foreground text-background border-foreground font-medium"
+                      : "border-border/40 text-foreground/50 hover:border-foreground/30 hover:text-foreground"
+                  }`}
+                >
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Footer actions */}
+          <div className="flex gap-3">
+            <button
+              onClick={() => {
+                clearAll();
+                onClose();
+              }}
+              className="flex-1 py-3 rounded-full border border-border/40 text-[13px] tracking-wide text-foreground/50 hover:text-foreground hover:border-foreground/30 transition-colors"
+            >
+              Clear all
+            </button>
+            <button
+              onClick={onClose}
+              className="flex-1 py-3 rounded-full bg-foreground text-background text-[13px] tracking-wide font-medium"
+            >
+              Show {resultCount} results
+            </button>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+
+// ── Main Component ────────────────────────────────────────────────────────────
 export function ProductsGrid({ category, sort }: ProductsGridProps) {
   const [sortBy, setSortBy] = useState(sort || "featured");
   const [selectedCategory, setSelectedCategory] = useState(category || "");
@@ -208,19 +379,18 @@ export function ProductsGrid({ category, sort }: ProductsGridProps) {
   const [priceOpen, setPriceOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [mobileSheetOpen, setMobileSheetOpen] = useState(false);
 
   const sortRef = useRef<HTMLDivElement>(null);
   const priceRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
 
-  // Detect scroll for toolbar elevation animation
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Close dropdowns on outside click
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (sortRef.current && !sortRef.current.contains(e.target as Node))
@@ -232,10 +402,21 @@ export function ProductsGrid({ category, sort }: ProductsGridProps) {
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  // Focus search input when opened
   useEffect(() => {
     if (searchOpen) searchRef.current?.focus();
   }, [searchOpen]);
+
+  // Lock body scroll when mobile sheet is open
+  useEffect(() => {
+    if (mobileSheetOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileSheetOpen]);
 
   const activeFilterCount = [
     selectedCategory !== "",
@@ -282,9 +463,69 @@ export function ProductsGrid({ category, sort }: ProductsGridProps) {
   };
 
   return (
-    <div className="container mx-auto px-4">
-      {/* ── Floating Pill Toolbar ── */}
-      <div className="sticky top-6 z-30 flex justify-center pointer-events-none mb-12">
+    <div className="container mx-auto px-4 overflow-x-hidden">
+      {/* ── MOBILE: Sticky filter bar ── */}
+      <div className="sticky top-4 z-30 mb-8 md:hidden">
+        <div
+          className={`
+          flex items-center gap-2 px-4 py-2.5
+          rounded-full border transition-all duration-500
+          ${
+            scrolled
+              ? "border-border/60 bg-background/90 backdrop-blur-xl shadow-[0_4px_24px_rgba(0,0,0,0.08)]"
+              : "border-border/30 bg-background/70 backdrop-blur-md"
+          }
+        `}
+        >
+          {/* Category scroll strip */}
+          <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none flex-1 min-w-0">
+            {CATEGORY_OPTIONS.map((cat) => (
+              <button
+                key={cat.value}
+                onClick={() => setSelectedCategory(cat.value)}
+                className={`
+                  flex-shrink-0 px-3.5 py-1.5 rounded-full text-[12px] tracking-wide
+                  transition-all duration-200 whitespace-nowrap
+                  ${
+                    selectedCategory === cat.value
+                      ? "bg-foreground text-background font-medium"
+                      : "text-foreground/50 hover:text-foreground"
+                  }
+                `}
+              >
+                {cat.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Divider */}
+          <div className="w-px h-4 bg-border/50 flex-shrink-0" />
+
+          {/* Filter button */}
+          <button
+            onClick={() => setMobileSheetOpen(true)}
+            className={`
+              flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px]
+              tracking-wide transition-all duration-200
+              ${
+                activeFilterCount > 0
+                  ? "bg-foreground text-background font-medium"
+                  : "text-foreground/50 hover:text-foreground"
+              }
+            `}
+          >
+            <SlidersHorizontal className="w-3 h-3" />
+            {activeFilterCount > 0 ? (
+              <span>{activeFilterCount}</span>
+            ) : (
+              <span>Filter</span>
+            )}
+          </button>
+        </div>
+      </div>
+
+      {/* ── DESKTOP: Floating pill toolbar ── */}
+      <div className="sticky top-6 z-30 hidden md:flex justify-center pointer-events-none mb-12">
         <div
           className={`
             pointer-events-auto
@@ -321,7 +562,6 @@ export function ProductsGrid({ category, sort }: ProductsGridProps) {
             </button>
           ))}
 
-          {/* Separator */}
           <div className="w-px h-5 bg-border/60 mx-1" />
 
           {/* Price filter */}
@@ -349,7 +589,6 @@ export function ProductsGrid({ category, sort }: ProductsGridProps) {
               />
             </button>
 
-            {/* Price dropdown */}
             <div
               className={`
                 absolute top-full left-1/2 -translate-x-1/2 mt-3 w-72 z-40
@@ -372,7 +611,6 @@ export function ProductsGrid({ category, sort }: ProductsGridProps) {
             </div>
           </div>
 
-          {/* Separator */}
           <div className="w-px h-5 bg-border/60 mx-1" />
 
           {/* Sort */}
@@ -430,7 +668,6 @@ export function ProductsGrid({ category, sort }: ProductsGridProps) {
             </div>
           </div>
 
-          {/* Separator */}
           <div className="w-px h-5 bg-border/60 mx-1" />
 
           {/* Search */}
@@ -480,7 +717,7 @@ export function ProductsGrid({ category, sort }: ProductsGridProps) {
             </div>
           </div>
 
-          {/* Clear all — only when filters active */}
+          {/* Clear all */}
           {activeFilterCount > 0 && (
             <button
               onClick={clearAll}
@@ -493,7 +730,23 @@ export function ProductsGrid({ category, sort }: ProductsGridProps) {
         </div>
       </div>
 
-      {/* ── Active filter chips (below toolbar) ── */}
+      {/* ── Mobile filter sheet ── */}
+      <MobileFilterSheet
+        open={mobileSheetOpen}
+        onClose={() => setMobileSheetOpen(false)}
+        selectedCategory={selectedCategory}
+        setSelectedCategory={setSelectedCategory}
+        sortBy={sortBy}
+        setSortBy={setSortBy}
+        priceRange={priceRange}
+        setPriceRange={setPriceRange}
+        search={search}
+        setSearch={setSearch}
+        clearAll={clearAll}
+        resultCount={filteredAndSortedProducts.length}
+      />
+
+      {/* ── Active filter chips ── */}
       {activeFilterCount > 0 && (
         <div
           className="flex flex-wrap gap-2 mb-8 justify-center"
@@ -554,7 +807,7 @@ export function ProductsGrid({ category, sort }: ProductsGridProps) {
 
       {/* ── Grid ── */}
       {filteredAndSortedProducts.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 md:gap-5">
           {filteredAndSortedProducts.map((product, i) => (
             <div
               key={product.id}
@@ -568,7 +821,7 @@ export function ProductsGrid({ category, sort }: ProductsGridProps) {
           ))}
         </div>
       ) : (
-        <div className="flex flex-col items-center justify-center py-32 text-center">
+        <div className="flex flex-col items-center justify-center py-24 text-center">
           <p className="text-2xl font-serif font-light text-foreground/30 mb-2 tracking-wide">
             No results
           </p>
@@ -604,6 +857,13 @@ export function ProductsGrid({ category, sort }: ProductsGridProps) {
             opacity: 1;
             transform: translateY(0);
           }
+        }
+        .scrollbar-none {
+          scrollbar-width: none;
+          -ms-overflow-style: none;
+        }
+        .scrollbar-none::-webkit-scrollbar {
+          display: none;
         }
       `}</style>
     </div>
