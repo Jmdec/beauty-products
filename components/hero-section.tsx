@@ -90,13 +90,11 @@ export function HeroSection() {
     goTo((current + 1) % slides.length);
   }, [current, goTo]);
 
-  // Auto-advance
   useEffect(() => {
     const interval = setInterval(next, DURATION);
     return () => clearInterval(interval);
   }, [next]);
 
-  // Progress bar
   useEffect(() => {
     setProgress(0);
     const start = Date.now();
@@ -145,14 +143,14 @@ export function HeroSection() {
       </div>
 
       {/* ── Content ── */}
-      <div className="relative z-20 w-full pb-16 pt-32 px-6 sm:px-12 lg:px-20">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-end">
-          {/* Left: headline */}
-          <div>
-            {/* Label pill */}
+      <div className="relative z-20 w-full pb-14 pt-28 px-6 sm:px-12 lg:px-20">
+        <div className="max-w-7xl mx-auto">
+          {/* ── Mobile layout: full-width stacked ── */}
+          <div className="flex flex-col gap-8 lg:hidden">
+            {/* Label */}
             <div
-              key={`label-${current}`}
-              className="inline-flex items-center gap-2 mb-6"
+              key={`label-mob-${current}`}
+              className="inline-flex items-center gap-2"
               style={{ animation: "fadeUp 0.6s 0.1s both" }}
             >
               <span
@@ -167,39 +165,41 @@ export function HeroSection() {
               </span>
             </div>
 
-            {/* Big headline */}
+            {/* Headline */}
             <h1
-              key={`h1-${current}`}
-              className="font-serif leading-none text-white mb-4"
+              key={`h1-mob-${current}`}
+              className="font-serif leading-none text-white"
               style={{ animation: "fadeUp 0.7s 0.2s both" }}
             >
-              <span className="block text-[clamp(4rem,10vw,9rem)] font-light tracking-tight opacity-90">
+              <span className="block text-[clamp(3.5rem,14vw,7rem)] font-light tracking-tight opacity-90">
                 {slide.headline}
               </span>
               <span
-                className="block text-[clamp(4rem,10vw,9rem)] font-semibold italic tracking-tight -mt-4"
+                className="block text-[clamp(3.5rem,14vw,7rem)] font-semibold italic tracking-tight -mt-3"
                 style={{ color: slide.accent }}
               >
                 {slide.subheadline}
               </span>
             </h1>
 
+            {/* Description */}
             <p
-              key={`desc-${current}`}
-              className="text-white/60 text-base sm:text-lg max-w-sm leading-relaxed mb-8"
+              key={`desc-mob-${current}`}
+              className="text-white/60 text-base max-w-xs leading-relaxed"
               style={{ animation: "fadeUp 0.7s 0.35s both" }}
             >
               {slide.description}
             </p>
 
+            {/* CTAs */}
             <div
-              key={`cta-${current}`}
+              key={`cta-mob-${current}`}
               className="flex flex-wrap gap-3"
               style={{ animation: "fadeUp 0.7s 0.45s both" }}
             >
               <Link href="/products">
                 <Button
-                  className="rounded-full h-12 px-8 text-sm font-semibold tracking-wide text-black gap-2"
+                  className="rounded-full h-11 px-7 text-sm font-semibold tracking-wide text-black gap-2"
                   style={{ backgroundColor: slide.accent }}
                 >
                   {slide.cta}
@@ -209,69 +209,157 @@ export function HeroSection() {
               <Link href="/about">
                 <Button
                   variant="ghost"
-                  className="rounded-full h-12 px-8 text-sm font-semibold text-white/70 hover:text-white border border-white/20 hover:border-white/40"
+                  className="rounded-full h-11 px-7 text-sm font-semibold text-white/70 hover:text-white border border-white/20 hover:border-white/40"
                 >
                   Our Story
                 </Button>
               </Link>
             </div>
-          </div>
 
-          {/* Right: stats + nav */}
-          <div className="flex flex-col items-start lg:items-end gap-8">
-            {/* Stats */}
-            <div
-              className="flex items-center gap-8"
-              style={{ animation: "fadeUp 0.7s 0.5s both" }}
-            >
-              {[
-                { value: "500+", label: "Products" },
-                { value: "10k+", label: "Customers" },
-                { value: "4.9★", label: "Rating" },
-              ].map((stat, i) => (
-                <div key={i} className="text-center lg:text-right">
-                  <p className="text-2xl font-serif font-semibold text-white">
-                    {stat.value}
-                  </p>
-                  <p className="text-xs text-white/40 tracking-wide mt-0.5">
-                    {stat.label}
-                  </p>
-                </div>
+            {/* Slide dots — mobile only, instead of thumbnails */}
+            <div className="flex items-center gap-2">
+              {slides.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => goTo(i)}
+                  aria-label={`Go to slide ${i + 1}`}
+                  className="transition-all duration-300 rounded-full"
+                  style={{
+                    width: i === current ? 24 : 6,
+                    height: 6,
+                    backgroundColor:
+                      i === current ? slide.accent : "rgba(255,255,255,0.3)",
+                  }}
+                />
               ))}
             </div>
+          </div>
 
-            {/* Slide thumbnails / nav */}
-            <div className="flex items-center gap-3">
-              {slides.map((s, i) => (
-                <button
-                  key={s.id}
-                  onClick={() => goTo(i)}
-                  className="relative group overflow-hidden rounded-xl transition-all duration-500"
-                  style={{
-                    width: i === current ? 80 : 48,
-                    height: 56,
-                    outline:
-                      i === current
-                        ? `2px solid ${slide.accent}`
-                        : "2px solid transparent",
-                    outlineOffset: 2,
-                  }}
-                  aria-label={`Go to slide ${i + 1}`}
+          {/* ── Desktop layout: two columns ── */}
+          <div className="hidden lg:grid grid-cols-2 gap-8 items-end">
+            {/* Left: headline */}
+            <div>
+              <div
+                key={`label-${current}`}
+                className="inline-flex items-center gap-2 mb-6"
+                style={{ animation: "fadeUp 0.6s 0.1s both" }}
+              >
+                <span
+                  className="w-2 h-2 rounded-full"
+                  style={{ backgroundColor: slide.accent }}
+                />
+                <span
+                  className="text-xs uppercase tracking-[0.25em] font-medium"
+                  style={{ color: slide.accent }}
                 >
-                  <img
-                    src={s.image}
-                    alt={s.label}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                  <div
-                    className="absolute inset-0 transition-opacity duration-300"
+                  {slide.label}
+                </span>
+              </div>
+
+              <h1
+                key={`h1-${current}`}
+                className="font-serif leading-none text-white mb-4"
+                style={{ animation: "fadeUp 0.7s 0.2s both" }}
+              >
+                <span className="block text-[clamp(4rem,10vw,9rem)] font-light tracking-tight opacity-90">
+                  {slide.headline}
+                </span>
+                <span
+                  className="block text-[clamp(4rem,10vw,9rem)] font-semibold italic tracking-tight -mt-4"
+                  style={{ color: slide.accent }}
+                >
+                  {slide.subheadline}
+                </span>
+              </h1>
+
+              <p
+                key={`desc-${current}`}
+                className="text-white/60 text-base sm:text-lg max-w-sm leading-relaxed mb-8"
+                style={{ animation: "fadeUp 0.7s 0.35s both" }}
+              >
+                {slide.description}
+              </p>
+
+              <div
+                key={`cta-${current}`}
+                className="flex flex-wrap gap-3"
+                style={{ animation: "fadeUp 0.7s 0.45s both" }}
+              >
+                <Link href="/products">
+                  <Button
+                    className="rounded-full h-12 px-8 text-sm font-semibold tracking-wide text-black gap-2"
+                    style={{ backgroundColor: slide.accent }}
+                  >
+                    {slide.cta}
+                    <ArrowRight className="w-4 h-4" />
+                  </Button>
+                </Link>
+                <Link href="/about">
+                  <Button
+                    variant="ghost"
+                    className="rounded-full h-12 px-8 text-sm font-semibold text-white/70 hover:text-white border border-white/20 hover:border-white/40"
+                  >
+                    Our Story
+                  </Button>
+                </Link>
+              </div>
+            </div>
+
+            {/* Right: stats + thumbnails */}
+            <div className="flex flex-col items-end gap-8">
+              <div
+                className="flex items-center gap-8"
+                style={{ animation: "fadeUp 0.7s 0.5s both" }}
+              >
+                {[
+                  { value: "500+", label: "Products" },
+                  { value: "10k+", label: "Customers" },
+                  { value: "4.9★", label: "Rating" },
+                ].map((stat, i) => (
+                  <div key={i} className="text-right">
+                    <p className="text-2xl font-serif font-semibold text-white">
+                      {stat.value}
+                    </p>
+                    <p className="text-xs text-white/40 tracking-wide mt-0.5">
+                      {stat.label}
+                    </p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Thumbnails */}
+              <div className="flex items-center gap-3">
+                {slides.map((s, i) => (
+                  <button
+                    key={s.id}
+                    onClick={() => goTo(i)}
+                    className="relative group overflow-hidden rounded-xl transition-all duration-500"
                     style={{
-                      backgroundColor: "rgba(0,0,0,0.3)",
-                      opacity: i === current ? 0 : 0.5,
+                      width: i === current ? 80 : 48,
+                      height: 56,
+                      outline:
+                        i === current
+                          ? `2px solid ${slide.accent}`
+                          : "2px solid transparent",
+                      outlineOffset: 2,
                     }}
-                  />
-                </button>
-              ))}
+                    aria-label={`Go to slide ${i + 1}`}
+                  >
+                    <img
+                      src={s.image}
+                      alt={s.label}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                    <div
+                      className="absolute inset-0 transition-opacity duration-300"
+                      style={{
+                        backgroundColor: "rgba(0,0,0,0.3)",
+                        opacity: i === current ? 0 : 0.5,
+                      }}
+                    />
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -280,10 +368,7 @@ export function HeroSection() {
         <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-white/10">
           <div
             className="h-full transition-none"
-            style={{
-              width: `${progress}%`,
-              backgroundColor: slide.accent,
-            }}
+            style={{ width: `${progress}%`, backgroundColor: slide.accent }}
           />
         </div>
 
@@ -293,7 +378,7 @@ export function HeroSection() {
           {String(slides.length).padStart(2, "0")}
         </div>
 
-        {/* ── Brand badge top-left ── */}
+        {/* ── Brand badge ── */}
         <div className="absolute top-6 left-6 sm:left-12 lg:left-20">
           <span className="text-white/80 text-xs uppercase tracking-[0.3em] font-medium">
             Premium Australian Beauty
