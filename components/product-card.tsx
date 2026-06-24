@@ -36,7 +36,7 @@ export function ProductCard({ product }: ProductCardProps) {
   const accentColor = CATEGORY_COLORS[product.category] ?? "#f9a8c9";
 
   return (
-    <article className="group relative flex flex-col h-full overflow-hidden rounded-2xl bg-card border border-border/60 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 transition-all duration-400">
+    <article className="group relative flex flex-col h-full min-w-0 overflow-hidden rounded-2xl ...">
       {/* ── Image ── */}
       <div className="relative h-64 sm:h-72 overflow-hidden bg-muted">
         <Image

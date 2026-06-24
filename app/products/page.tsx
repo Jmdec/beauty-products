@@ -96,7 +96,7 @@ export default function ProductsPage({
         </section>
 
         {/* ── Products Section ── */}
-        <section className="py-10 sm:py-14">
+        <section className="py-10 sm:py-14 overflow-hidden">
           <ProductsGrid
             category={searchParams.category}
             sort={searchParams.sort}
