@@ -14,10 +14,10 @@ export default function ProductsPage({
   searchParams: { category?: string; sort?: string };
 }) {
   return (
-    <div className="flex flex-col min-h-screen bg-background">
+    <div className="flex flex-col min-h-screen bg-background overflow-x-hidden">
       <Header />
 
-      <main className="flex-1">
+      <main className="flex-1 overflow-x-hidden">
         {/* ── Editorial Header Banner ── */}
         <section className="relative overflow-hidden border-b border-border/60 bg-gradient-to-br from-[#fdf0f5] via-[#fdf8fb] to-[#f8f0fd]">
           {/* Dot grid decoration */}
@@ -32,12 +32,13 @@ export default function ProductsPage({
           {/* Soft circle accent top-right */}
           <div className="absolute top-[-60px] right-[-60px] w-[280px] h-[280px] rounded-full bg-primary/10 blur-3xl pointer-events-none" />
 
-          <div className="relative container mx-auto px-4 py-12 sm:py-16">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+          <div className="relative container mx-auto px-6 py-10 sm:py-16">
+            {/* Stack vertically on mobile, side-by-side on sm+ */}
+            <div className="flex flex-col gap-8 sm:flex-row sm:items-center sm:justify-between">
               {/* Left: heading */}
               <div>
                 <p className="text-[11px] uppercase tracking-[0.3em] text-primary font-semibold mb-3">
-                  Skye Avenue
+                  Est. Sydney, Australia
                 </p>
                 <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-semibold text-foreground leading-none tracking-tight">
                   Our{" "}
@@ -49,8 +50,8 @@ export default function ProductsPage({
                 </p>
               </div>
 
-              {/* Right: category quick links */}
-              <div className="flex sm:flex-col gap-3 sm:gap-2 sm:items-end flex-wrap">
+              {/* Right: category quick links — horizontal pills on mobile, vertical on sm+ */}
+              <div className="flex flex-wrap gap-2 sm:flex-col sm:gap-2 sm:items-end">
                 {[
                   { label: "Skincare", color: "#f9a8c9", count: 7 },
                   { label: "Fragrance", color: "#c4b5fd", count: 2 },
@@ -72,6 +73,24 @@ export default function ProductsPage({
                   </a>
                 ))}
               </div>
+            </div>
+
+            {/* Stats row */}
+            <div className="flex items-center gap-8 mt-10 pt-8 border-t border-border/30">
+              {[
+                { value: "50+", label: "Products" },
+                { value: "4", label: "Categories" },
+                { value: "100%", label: "Authentic" },
+              ].map((stat) => (
+                <div key={stat.label}>
+                  <p className="font-serif text-2xl sm:text-3xl font-semibold text-foreground/80">
+                    {stat.value}
+                  </p>
+                  <p className="text-[10px] uppercase tracking-[0.25em] text-foreground/40 mt-0.5">
+                    {stat.label}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
         </section>
